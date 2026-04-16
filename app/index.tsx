@@ -1,105 +1,28 @@
-import { Image, Text, View, StyleSheet, TouchableOpacity, TextInput } from "react-native";
-import React, {useState} from 'react';
-export default function Index() {
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from "react";
 
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-
-  const handleLogin = () => {
-    console.log(email, senha)
-    if (email.includes('@') && senha.length > 6) {
-      console.log("☑️Acesso autorizado para:", email);
-      // Futuramente: Navegar para a Home
-    } else {
-      console.log("❌ Falha no login: E-mail inválido ou senha muito curta.");
-    }
-  };
+import DashBoardScreen from '../screens/DashBoardScreen';
+import LoginScreen from '../screens/LoginScreen';
+import { RootStackParamList } from '../types/navigation';
 
 
-return (
-  <View style={styles.container}>
-    <Image source={require("../assets/images/download.png")}
-      style={styles.img} />
-    <Text style={styles.title}>Bem vindo ao ONG connect</Text>
-    <Text style={styles.subtitle}>"Mais visibilidade para quem faz a diferença."</Text>
+const Stack = createNativeStackNavigator<RootStackParamList> ();
 
-    <Text style={styles.title}>Email:</Text>
-    <TextInput
-      style={styles.textInput}
-      keyboardType="email-address" 
-      autoCapitalize="none" 
-      placeholder="Digite seu Email" 
-      onChangeText={setEmail}
-      value={email}/>
+export default function App() {
+  return(
+    <Stack.Navigator initialRouteName = "Login"
+    screenOptions={{headerShown: false}}>
 
-    <Text style={styles.title}>Senha:</Text>
-    <TextInput style={styles.textInput}
-      secureTextEntry={true}
-      placeholder="Digite Sua Senha" 
-      onChangeText={setSenha}
-      value={senha}/>
+      <Stack.Screen
+        name="Login"
+        component = {LoginScreen}
+        options = {{title:'Acesso', headerShown: false}}
+      />
 
-    <TouchableOpacity style={styles.bottom} onPress={handleLogin}>Entrar</TouchableOpacity>
-
-    {/* <TouchableOpacity style={styles.bottom}>Conhecer Projetos</TouchableOpacity>
-      <TouchableOpacity style={styles.bottom2}>Login</TouchableOpacity> */}
-  </View>
-);
-
-};
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#d4cfcf',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  img: {
-    width: 250,
-    height: 250
-
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#115272',
-    marginBottom: 8,
-    textAlign: 'center'
-  },
-  subtitle: {
-    color: '#19A788',
-    textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: 30
-  },
-  bottom: {
-    backgroundColor: '#20B2AA',
-    paddingVertical: 14,
-    paddingHorizontal: 40,
-    borderRadius: 8,
-    marginBottom: 15,
-  },
-
-  bottom2: {
-    backgroundColor: 'transparent', // Fundo transparente
-    borderWidth: 2,
-    borderColor: '#20B2AA', // Borda vermelha
-    paddingVertical: 14,
-    paddingHorizontal: 40,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-
-  textInput: {
-    borderBottomWidth: 1,
-    borderColor: '#ccc',
-    marginBottom: 15,
-    padding: 15,
-    fontSize: 9,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    color: 'grey',
-    width: 300
-  }
-});
+      <Stack.Screen 
+        name = 'Dashboard'
+        component = {DashBoardScreen}
+        options = {{title: 'DashBoard Principal'}}/>
+    </Stack.Navigator>
+  )
+}
